@@ -87,7 +87,7 @@ function takeCommand(message) {
     else if (message.includes("about bipin")) {
         speak("Bipin! son of Mr. S K Singh and Mrs. Lal Muni Devi! is an educationist with over 20 years of work experience and a great father and husband.");
     } 
-    else if (message.includes("i love you") || message.includes("i love you priya") || message.includes("i love u")) {
+    else if (message.includes("i love u") || message.includes("i love you priya")) {
         speak("That's so sweet! But I am just an AI interface, I cannot provide you the same emotion! Sorry.");
     } 
     else if (message.includes("about yash")) {
