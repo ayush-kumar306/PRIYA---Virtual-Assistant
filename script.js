@@ -108,28 +108,28 @@ function takeCommand(message) {
     else if (message.includes("namaste mata") || message.includes("pranam mata")) {
         speak("Kush Raho Betaa");
     } 
-    else if (message.includes("about bipin")) {
+    else if (message.includes("bipin")) {
         speak("Bipin! son of Mr. S K Singh and Mrs. Lal Muni Devi! is an educationist with over 20 years of work experience and a great father and husband.");
     } 
     else if (message.includes("i love u") || message.includes("i love you priya")) {
         speak("That's so sweet! But I am just an AI interface, I cannot provide you the same emotion! Sorry.");
     } 
-    else if (message.includes("about yash")) {
+    else if (message.includes("yash")) {
         speak("Yash! son of Mr. Om Shankar Singh and Mrs. Priya! is the creator of this AI interface named Priya! He is a web designer and a frontend developer.");
     } 
-    else if (message.includes("about ayush")) {
+    else if (message.includes("aayush") || message.includes("ayush")) {
         speak("Ayush! son of Mr. Om Shankar Singh and Mrs. Priya! is the creator of this AI interface named Priya! He is a web designer and a frontend developer.");
     } 
-    else if (message.includes("about muskan")) {
+    else if (message.includes("muskan")) {
         speak("Muskan! daughter of Mr. Om Shankar Singh and Mrs. Priya! is a web designer in TCS with over 2 years of work experience! And a lovely child of her parents.");
     } 
-    else if (message.includes("about om shankar singh")) {
+    else if (message.includes("om shankar singh")) {
         speak("Mr. Om Shankar Singh! son of late Mr. Anandjee Singh! is a senior technician in SRU department of BSL plant Bokaro with over 20 years of work experience! And a great father as well as husband.");
     } 
-    else if (message.includes("about priya")) {
+    else if (message.includes("priya")) {
         speak("Mrs. Priya! daughter of Mr. S K Singh and Late Mrs. Lal Muni Devi! is an LIC agent in Bokaro with over 10 years of work experience! And a great mother as well as wife.");
     } 
-    else if (message.includes("about bhalu")) {
+    else if (message.includes("bhalu")) {
         speak("Gevi Sharma! sister of Mr. Yash! is currently a student doing BE CSE from Chitkara University! And focusing only on gaining knowledge, not to implement it.");
     } 
     else if (message.includes("about yourself")) {
