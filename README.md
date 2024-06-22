@@ -30,4 +30,4 @@ Challenges
 4. Technical Expertise: Requires knowledge of programming, AI, and API integration.
 5. Maintenance: Ongoing updates and improvements are necessary to keep the system functional and up-to-date.
 
-Creating PRIYA allows for a highly customized tool that can significantly improve productivity and efficiency by automating routine tasks and providing tailored support.
+<h3>Creating PRIYA allows for a highly customized tool that can significantly improve productivity and efficiency by automating routine tasks and providing tailored support.</h3>
