@@ -80,55 +80,79 @@ btn.addEventListener('click', () => {
 function takeCommand(message) {
     if (message.includes('hello')) {
         speak("Hello! How are you?");
-    } else if (message.includes("namaste mata") || message.includes("pranam mata")) {
+    } 
+    else if (message.includes("namaste mata") || message.includes("pranam mata")) {
         speak("Kush Raho Betaa");
-    } else if (message.includes("about bipin")) {
+    } 
+    else if (message.includes("about bipin")) {
         speak("Bipin! son of Mr. S K Singh and Mrs. Lal Muni Devi! is an educationist with over 20 years of work experience and a great father and husband.");
-    } else if (message.includes("i love you priya") || message.includes("i love you")) {
+    } 
+    else if (message.includes("i love you priya") || message.includes("i love you")) {
         speak("That's so sweet! But I am just an AI interface, I cannot provide you the same emotion! Sorry.");
-    } else if (message.includes("about yash")) {
+    } 
+    else if (message.includes("about yash")) {
         speak("Yash! son of Mr. Om Shankar Singh and Mrs. Priya! is the creator of this AI interface named Priya! He is a web designer and a frontend developer.");
-    } else if (message.includes("about ayush")) {
+    } 
+    else if (message.includes("about ayush")) {
         speak("Ayush! son of Mr. Om Shankar Singh and Mrs. Priya! is the creator of this AI interface named Priya! He is a web designer and a frontend developer.");
-    } else if (message.includes("about muskan")) {
+    } 
+    else if (message.includes("about muskan")) {
         speak("Muskan! daughter of Mr. Om Shankar Singh and Mrs. Priya! is a web designer in TCS with over 2 years of work experience! And a lovely child of her parents.");
-    } else if (message.includes("about om shankar singh")) {
+    } 
+    else if (message.includes("about om shankar singh")) {
         speak("Mr. Om Shankar Singh! son of late Mr. Anandjee Singh! is a senior technician in SRU department of BSL plant Bokaro with over 20 years of work experience! And a great father as well as husband.");
-    } else if (message.includes("about priya")) {
+    } 
+    else if (message.includes("about priya")) {
         speak("Mrs. Priya! daughter of Mr. S K Singh and Late Mrs. Lal Muni Devi! is an LIC agent in Bokaro with over 10 years of work experience! And a great mother as well as wife.");
-    } else if (message.includes("about bhalu")) {
+    } 
+    else if (message.includes("about bhalu")) {
         speak("Gevi Sharma! sister of Mr. Yash! is currently a student doing BE CSE from Chitkara University! And focusing only on gaining knowledge, not to implement it.");
-    } else if (message.includes("about yourself")) {
+    } 
+    else if (message.includes("about yourself")) {
         speak("Hello! Myself Priya! an AI based software created by Mr. Ayush! as a present for his mother.");
-    } else if (message.includes("open google")) {
+    } 
+    else if (message.includes("open google")) {
         window.open("https://google.com", "_blank");
         speak("Opening Google for you.");
-    } else if (message.includes("open chatgpt") || message.includes("open chat gpt")) {
+    } 
+    else if (message.includes("open chatgpt") || message.includes("open chat gpt")) {
         window.open("https://chatgpt.com/", "_blank");
         speak("Opening ChatGPT for you.");
-    } else if (message.includes("open youtube")) {
+    } 
+    else if (message.includes("open youtube")) {
         window.open("https://youtube.com", "_blank");
         speak("Opening YouTube for you.");
-    } else if (message.includes("open facebook")) {
+    } 
+    else if (message.includes("open facebook")) {
         window.open("https://facebook.com", "_blank");
         speak("Opening Facebook for you.");
-    } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
+    } 
+    else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
         window.open(`https://www.google.com/search?q=${message.replace(/ /g, "+")}`, "_blank");
         const finalText = "This is what I found on the internet regarding " + message;
         speak(finalText);
-    } else if (message.includes('google')) {
+    } 
+    else if (message.includes('google')) {
         window.open(`https://www.google.com/search?q=${message.replace("google", "").trim().replace(/ /g, "+")}`, "_blank");
         speak("Searching Google for " + message.replace("google", "").trim());
-    } else if (message.includes('time')) {
+    } 
+    else if (message.includes('time')) {
         const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
         speak("The time is " + time);
-    } else if (message.includes('date')) {
+    } 
+    else if (message.includes('date')) {
         const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
         speak("Today's date is " + date);
-    } else if (message.includes('calculator')) {
+    } 
+    else if (message.includes('calculator')) {
         window.open('Calculator:///', '_blank');
         speak("Opening Calculator.");
-    } else {
+    }
+    else if (message.includes('spotify')) {
+        window.open('Spotify:///', '_blank');
+        speak("Opening Spotify.");
+    }
+    else {
         window.open(`https://www.google.com/search?q=${message.replace(/ /g, "+")}`, "_blank");
         speak("I found some information for " + message + " on Google.");
     }
