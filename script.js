@@ -1,25 +1,38 @@
 // Selecting the elements.
-const btn = document.querySelector('.talk');              // Selects the element with the class 'talk'.
-const content = document.querySelector('.content');       // Selects the element with the class 'content'.
+const btn = document.querySelector('.talk');         
+const content = document.querySelector('.content');   
+
+let isPriyaActive = false;                   
+let isSpeaking = false;                    
 
 // Function to Speak Text.
-function speak(text) {                                          // Takes a string 'text' and converts it to speech using the Web Speech API.
-    const text_speak = new SpeechSynthesisUtterance(text);      // Creates a 'SpeechSynthesisUtterance' object with the provided text.
-    setFemaleVoice(text_speak);                                 // Sets a female voice for the utterance.      
+function speak(text) {
+    isSpeaking = true;
+    recognition.stop();                                      
+    const text_speak = new SpeechSynthesisUtterance(text);   
+    setFemaleVoice(text_speak);                       
     text_speak.rate = 1;
     text_speak.volume = 1;
     text_speak.pitch = 1;
-    window.speechSynthesis.speak(text_speak);                   // Uses the 'speechSynthesis' API to speak the utterance.
+    text_speak.onend = () => {
+        isSpeaking = false;
+        if (isPriyaActive) {
+            recognition.start();
+        } else {
+            wakeWordRecognition.start();
+        }
+    };
+    window.speechSynthesis.speak(text_speak);    
 }
 
 // Function to Set Female Voice.
-function setFemaleVoice(utterance) {                                                                            // Sets a female voice for the given 'utterance'.
+function setFemaleVoice(utterance) {                                                                      
     const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.gender === 'female');       // Finds a voice with "Female" in its name or gender set to female.
+    const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.gender === 'female');      
     if (femaleVoice) {
         utterance.voice = femaleVoice;
     } else {
-        console.log('Female voice not found, using default voice');                                             // If a female voice is found, it sets it to the 'utterance'. Otherwise, it logs a message and uses the default voice.
+        console.log('Female voice not found, using default voice');                                         
     }
 }
 
@@ -57,19 +70,30 @@ wakeWordRecognition.interimResults = false;
 
 // Wake Word Recognition Handler.
 wakeWordRecognition.onresult = (event) => {
-    const transcript = event.results[event.resultIndex][0].transcript.toLowerCase().trim();
-    if (transcript.includes('hey priya')) {
-        speak("Ji");
-        recognition.start();
+    if (!isSpeaking) {
+        const transcript = event.results[event.resultIndex][0].transcript.toLowerCase().trim();
+        if (transcript.includes('hey priya') || transcript.includes('priya')) {
+            speak("Ji");
+            isPriyaActive = true;
+            recognition.start();
+        }
     }
 };
 
 // Command Recognition Handler.
 recognition.onresult = (event) => {
-    const currentIndex = event.resultIndex;
-    const transcript = event.results[currentIndex][0].transcript;
-    content.textContent = transcript;
-    takeCommand(transcript.toLowerCase());
+    if (!isSpeaking) {
+        const currentIndex = event.resultIndex;
+        const transcript = event.results[currentIndex][0].transcript.toLowerCase();
+        content.textContent = transcript;
+
+        if (transcript.includes('rest')) {
+            isPriyaActive = false;
+            speak("Okay, I am taking a rest.");
+        } else {
+            takeCommand(transcript);
+        }
+    }
 };
 
 btn.addEventListener('click', () => {
@@ -165,8 +189,10 @@ window.addEventListener('load', () => {
 
 // Restart wake word recognition when it ends.
 wakeWordRecognition.onspeechend = () => {
-    wakeWordRecognition.stop();
-    wakeWordRecognition.start();
+    if (!isPriyaActive && !isSpeaking) {
+        wakeWordRecognition.stop();
+        wakeWordRecognition.start();
+    }
 };
 
 recognition.onspeechend = () => {
@@ -174,5 +200,9 @@ recognition.onspeechend = () => {
 };
 
 recognition.onend = () => {
-    wakeWordRecognition.start();  // Restart listening for wake word after command is processed.
+    if (isPriyaActive && !isSpeaking) {
+        recognition.start();
+    } else {
+        wakeWordRecognition.start();
+    }
 };
