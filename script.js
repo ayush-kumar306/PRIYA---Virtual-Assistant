@@ -152,6 +152,10 @@ function takeCommand(message) {
         window.open("https://youtube.com", "_blank");
         speak("Opening YouTube for you.");
     }
+    else if (message.includes("open github")) {
+        window.open("https://github.com/ayush-kumar306", "_blank");
+        speak("Opening GitHub for you.");
+    }
     else if (message.includes("open facebook")) {
         window.open("https://facebook.com", "_blank");
         speak("Opening Facebook for you.");
