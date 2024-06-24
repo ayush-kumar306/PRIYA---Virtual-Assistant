@@ -4,6 +4,7 @@ const content = document.querySelector('.content');
 
 let isPriyaActive = false;                   
 let isSpeaking = false;                    
+let voicesLoaded = false; // Track if voices are loaded
 
 // Function to Speak Text.
 function speak(text) {
@@ -50,13 +51,14 @@ function wishMe() {
     }
 }
 
-// Initialization on Page Load.
-window.addEventListener('load', () => {
-    window.speechSynthesis.onvoiceschanged = () => {
+// Function to Initialize PRIYA
+function initializePriya() {
+    if (!voicesLoaded) {
+        voicesLoaded = true;
         speak("Initializing PRIYA");
         wishMe();
-    };
-});
+    }
+}
 
 // Speech Recognition Setup.
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -184,7 +186,19 @@ function takeCommand(message) {
 
 // Automatically start listening for wake word when the page loads.
 window.addEventListener('load', () => {
-    wakeWordRecognition.start();
+    // Ensure voices are loaded before initializing
+    window.speechSynthesis.onvoiceschanged = () => {
+        if (!voicesLoaded) {
+            initializePriya();
+        }
+    };
+
+    // Fallback in case voiceschanged event does not trigger
+    setTimeout(() => {
+        if (!voicesLoaded) {
+            initializePriya();
+        }
+    }, 1000);
 });
 
 // Restart wake word recognition when it ends.
