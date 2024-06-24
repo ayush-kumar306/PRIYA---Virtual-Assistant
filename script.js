@@ -181,6 +181,10 @@ function takeCommand(message) {
         window.open('Calculator:///', '_blank');
         speak("Opening Calculator.");
     }
+    else if (message.includes('whatsapp')) {
+        window.open('Whatsapp:///', '_blank');
+        speak("Opening Calculator.");
+    }
     else if (message.includes('spotify')) {
         window.open('Spotify:///', '_blank');
         speak("Opening Spotify.");
