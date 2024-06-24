@@ -152,7 +152,7 @@ function takeCommand(message) {
         window.open("https://youtube.com", "_blank");
         speak("Opening YouTube for you.");
     }
-    else if (message.includes("github") || (message.includes("open git hub")) {
+    else if (message.includes("github") || message.includes("open git hub")) {
         window.open("https://github.com/ayush-kumar306", "_blank");
         speak("Opening GitHub for you.");
     }
