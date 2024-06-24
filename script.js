@@ -1,111 +1,113 @@
-// Selecting the elements.
-const btn = document.querySelector('.talk');
-const content = document.querySelector('.content');
+const btn = document.querySelector('.talk');   // Selecting a button element with class 'talk'
+const content = document.querySelector('.content');   // Selecting a content area with class 'content'
 
-let isPriyaActive = false;
-let isSpeaking = false;
-let voicesLoaded = false; // Track if voices are loaded
-let lowBatteryAlerted = false; // Flag to track if low battery alert has been given
-let highBatteryAlerted = false; // Flag to track if high battery alert has been given
+// Initializing flags and variables.
+let isPriyaActive = false;   // Flag to indicate if "Priya" is active
+let isSpeaking = false;      // Flag to indicate if the "Priya" is currently speaking
+let voicesLoaded = false;    // Flag to track if speech synthesis voices have been loaded
+let lowBatteryAlerted = false;  // Flag to track if low battery alert has been triggered
+let highBatteryAlerted = false; // Flag to track if high battery alert has been triggered
 
 // Function to Speak Text.
 function speak(text) {
-    isSpeaking = true;
-    recognition.stop();
-    const text_speak = new SpeechSynthesisUtterance(text);
-    setFemaleVoice(text_speak);
-    text_speak.rate = 1;
-    text_speak.volume = 1;
-    text_speak.pitch = 1;
-    text_speak.onend = () => {
-        isSpeaking = false;
+    isSpeaking = true;   // Set speaking flag to true
+    recognition.stop();  // Stop speech recognition if active
+    const text_speak = new SpeechSynthesisUtterance(text);  // Create a speech synthesis utterance object
+    setFemaleVoice(text_speak);  // Set a female voice for the utterance
+    text_speak.rate = 1;    // Set speaking rate
+    text_speak.volume = 1;  // Set volume
+    text_speak.pitch = 1;   // Set pitch
+    text_speak.onend = () => {   // Callback when speech ends
+        isSpeaking = false;   // Reset speaking flag
         if (isPriyaActive) {
-            recognition.start();
+            recognition.start();   // Restart recognition if Priya is active
         } else {
-            wakeWordRecognition.start();
+            wakeWordRecognition.start();   // Start wake word recognition otherwise
         }
     };
-    window.speechSynthesis.speak(text_speak);
+    window.speechSynthesis.speak(text_speak);   // Speak the utterance
 }
 
 // Function to Set Female Voice.
 function setFemaleVoice(utterance) {
-    const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.gender === 'female');
+    const voices = window.speechSynthesis.getVoices();   // Get available speech synthesis voices
+    const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.gender === 'female');   // Find a female voice
     if (femaleVoice) {
-        utterance.voice = femaleVoice;
+        utterance.voice = femaleVoice;   // Set the utterance to use the found female voice
     } else {
-        console.log('Female voice not found, using default voice');
+        console.log('Female voice not found, using default voice');   // Log if no female voice found
     }
 }
 
 // Function to Wish Based on Time.
 function wishMe() {
-    const day = new Date();
-    const hour = day.getHours();
+    const day = new Date();   // Get current date
+    const hour = day.getHours();   // Get current hour
 
     if (hour >= 0 && hour < 12) {
-        speak("Good Morning!");
+        speak("Good Morning!");   // Speak "Good Morning!" if morning
     } else if (hour >= 12 && hour < 17) {
-        speak("Good Afternoon!");
+        speak("Good Afternoon!");   // Speak "Good Afternoon!" if afternoon
     } else {
-        speak("Good Evening!");
+        speak("Good Evening!");   // Speak "Good Evening!" otherwise
     }
 }
 
 // Function to Initialize PRIYA
 function initializePriya() {
-    if (!voicesLoaded) {
-        voicesLoaded = true;
-        speak("Initializing PRIYA");
-        wishMe();
-        monitorBatteryStatus(); // Monitor battery status upon initialization
+    if (!voicesLoaded) {   // Check if voices are not loaded yet
+        voicesLoaded = true;   // Mark voices as loaded
+        speak("Initializing PRIYA");   // Speak initialization message
+        wishMe();   // Call function to wish based on time
+        monitorBatteryStatus();   // Start monitoring battery status
     }
 }
 
 // Speech Recognition Setup.
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
-const wakeWordRecognition = new SpeechRecognition();
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;   // Get speech recognition object
+const recognition = new SpeechRecognition();   // Create speech recognition instance
+const wakeWordRecognition = new SpeechRecognition();   // Create wake word recognition instance
 
 // Recognition settings.
-recognition.continuous = false;          // Stops recognition automatically after speech ends.
-wakeWordRecognition.continuous = true;   // Keeps listening continuously for the wake word.
-wakeWordRecognition.interimResults = false;
+recognition.continuous = false;   // Set continuous recognition to false
+wakeWordRecognition.continuous = true;   // Set continuous wake word recognition
+wakeWordRecognition.interimResults = false;   // Set interim results to false
 
 // Wake Word Recognition Handler.
-wakeWordRecognition.onresult = (event) => {
-    if (!isSpeaking) {
-        const transcript = event.results[event.resultIndex][0].transcript.toLowerCase().trim();
-        if (transcript.includes('hey priya') || transcript.includes('priya')) {
-            speak("Ji");
-            isPriyaActive = true;
-            recognition.start();
+wakeWordRecognition.onresult = (event) => {   // Event handler for wake word recognition results
+    if (!isSpeaking) {   // Check if not currently speaking
+        const transcript = event.results[event.resultIndex][0].transcript.toLowerCase().trim();   // Get recognized transcript
+        if (transcript.includes('hey priya') || transcript.includes('priya')) {   // Check for wake word
+            speak("Ji");   // Respond with acknowledgment
+            isPriyaActive = true;   // Set Priya as active
+            recognition.start();   // Start normal recognition
         }
     }
 };
 
 // Command Recognition Handler.
-recognition.onresult = (event) => {
-    if (!isSpeaking) {
-        const currentIndex = event.resultIndex;
-        const transcript = event.results[currentIndex][0].transcript.toLowerCase();
-        content.textContent = transcript;
+recognition.onresult = (event) => {   // Event handler for command recognition results
+    if (!isSpeaking) {   // Check if not currently speaking
+        const currentIndex = event.resultIndex;   // Get current recognition result index
+        const transcript = event.results[currentIndex][0].transcript.toLowerCase();   // Get recognized transcript
+        content.textContent = transcript;   // Display recognized transcript in content area
 
-        if (transcript.includes('rest')) {
-            isPriyaActive = false;
-            speak("Okay, I am taking a rest.");
+        if (transcript.includes('rest')) {   // Check for command to rest
+            isPriyaActive = false;   // Deactivate Priya
+            speak("Okay, I am taking a rest.");   // Acknowledge rest command
         } else {
-            takeCommand(transcript);
+            takeCommand(transcript);   // Handle other commands
         }
     }
 };
 
-btn.addEventListener('click', () => {
-    content.textContent = "Listening....";
-    recognition.start();
+// Event listener for button click to start recognition.
+btn.addEventListener('click', () => {   // Event listener for button click
+    content.textContent = "Listening....";   // Update content area
+    recognition.start();   // Start speech recognition
 });
 
+// Function to handle various spoken commands.
 function takeCommand(message) {
     if (message.includes('hello')) {
         speak("Hello! How are you?");
@@ -200,9 +202,9 @@ function takeCommand(message) {
 
 // Function to Monitor Battery Status
 function monitorBatteryStatus() {
-    navigator.getBattery().then(battery => {
-        const level = Math.floor(battery.level * 100);
-        const charging = battery.charging;
+    navigator.getBattery().then(battery => {   // Get battery information
+        const level = Math.floor(battery.level * 100);   // Get battery level in percentage
+        const charging = battery.charging;   // Check if device is charging
 
         // Speak battery status
         speak(`Sir! your device battery level is ${level} percent`);
@@ -221,7 +223,7 @@ function monitorBatteryStatus() {
     });
 }
 
-// Automatically start listening for wake word when the page loads.
+// Event listener to ensure voices are loaded before initializing PRIYA
 window.addEventListener('load', () => {
     // Ensure voices are loaded before initializing
     window.speechSynthesis.onvoiceschanged = () => {
@@ -246,10 +248,12 @@ wakeWordRecognition.onspeechend = () => {
     }
 };
 
+// Stop recognition when speech ends.
 recognition.onspeechend = () => {
     recognition.stop();
 };
 
+// Restart recognition when it ends, depending on current state.
 recognition.onend = () => {
     if (isPriyaActive && !isSpeaking) {
         recognition.start();
@@ -261,8 +265,8 @@ recognition.onend = () => {
 // Battery event listeners to monitor charger connection/disconnection
 navigator.getBattery().then(battery => {
     function updateBatteryStatus() {
-        const level = Math.floor(battery.level * 100);
-        const charging = battery.charging;
+        const level = Math.floor(battery.level * 100);   // Get battery level in percentage
+        const charging = battery.charging;   // Check if device is charging
 
         // Speak battery status
         speak(`the device is currently ${charging ? 'charging' : 'not charging'}.`);
@@ -284,7 +288,4 @@ navigator.getBattery().then(battery => {
     battery.addEventListener('chargingchange', () => {
         updateBatteryStatus();
     });
-
-    // Initial status
-    //updateBatteryStatus();
 });
