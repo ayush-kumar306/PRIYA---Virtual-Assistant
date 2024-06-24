@@ -101,12 +101,6 @@ recognition.onresult = (event) => {   // Event handler for command recognition r
     }
 };
 
-// Event listener for button click to start recognition.
-btn.addEventListener('click', () => {   // Event listener for button click
-    content.textContent = "Listening....";   // Update content area
-    recognition.start();   // Start speech recognition
-});
-
 // Function to handle various spoken commands.
 function takeCommand(message) {
     if (message.includes('hello')) {
